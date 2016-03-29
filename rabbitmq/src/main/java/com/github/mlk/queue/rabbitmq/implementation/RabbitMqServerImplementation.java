@@ -8,12 +8,15 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RabbitMqServerImplementation implements ServerImplementation {
+    private final Logger log = Logger.getLogger(getClass().getName());
+
     private final ConnectionFactory factory;
     private Connection connection;
     private ThreadLocal<Channel> channels = new ThreadLocal<>();
-
     private ReentrantLock lock = new ReentrantLock();
 
     public RabbitMqServerImplementation(ConnectionFactory factory) {
@@ -29,6 +32,7 @@ public class RabbitMqServerImplementation implements ServerImplementation {
 
             channel.basicPublish("", queueName, null, message);
         } catch (IOException | TimeoutException ioe) {
+            close();
             throw new QueueException("failed to enqueue onto queue: " + queueName, ioe);
         }
     }
@@ -53,7 +57,27 @@ public class RabbitMqServerImplementation implements ServerImplementation {
 
             channel.basicConsume(queueName, false, consumer);
         } catch (IOException | TimeoutException ioe) {
+            close();
             throw new QueueException("failed to enqueue onto queue: " + queueName, ioe);
+        }
+    }
+
+    @Override
+    public void close() {
+        lock.lock();
+
+        try {
+            if(channels.get() != null) {
+                channels.get().close();
+            }
+
+            getConnection().close();
+        } catch (TimeoutException | IOException e) {
+            log.log(Level.INFO, "Failed to close connection", e);
+        } finally {
+            channels.remove();
+            connection = null;
+            lock.unlock();
         }
     }
 

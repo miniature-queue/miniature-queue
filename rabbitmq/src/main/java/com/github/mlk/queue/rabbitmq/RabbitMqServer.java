@@ -7,19 +7,21 @@ import com.rabbitmq.client.ConnectionFactory;
 
 public class RabbitMqServer extends Server {
 
-    private final ConnectionFactory factory;
+    private final RabbitMqServerImplementation implementation;
 
     public RabbitMqServer(String host) {
-        this.factory = new ConnectionFactory();
+        ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(host);
+        implementation = new RabbitMqServerImplementation(factory);
+
     }
 
     public RabbitMqServer(ConnectionFactory factory) {
-        this.factory = factory;
+        implementation = new RabbitMqServerImplementation(factory);
     }
 
     @Override
     protected ServerImplementation getImplementation() {
-        return new RabbitMqServerImplementation(factory);
+        return implementation;
     }
 }

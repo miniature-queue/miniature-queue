@@ -71,7 +71,7 @@ public class Queuify {
                     } else {
                         ParameterizedType type = (ParameterizedType) method.getGenericParameterTypes()[paramClasses.length - 1];
                         Type returnType = type.getActualTypeArguments()[1];
-                        System.out.println(returnType);
+
                         if(!returnType.equals(Boolean.class)) {
                             throw new IllegalArgumentException(method.getName() + " function must return a boolean");
                         }

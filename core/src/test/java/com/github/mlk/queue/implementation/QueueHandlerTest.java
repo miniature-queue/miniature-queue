@@ -103,4 +103,8 @@ class RecordingServerImplementation implements ServerImplementation {
         this.queue = queue;
         this.action = action;
     }
+
+    @Override
+    public void close() {
+    }
 }
