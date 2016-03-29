@@ -19,3 +19,6 @@ rabbitmq/.idea/*
 rabbitmq/*.iml
 rabbitmq/target
 
+gson/.idea
+gson/*.iml
+gson/target

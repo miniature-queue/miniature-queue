@@ -4,6 +4,7 @@ import com.github.mlk.queue.*;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.function.Function;
 
 public class QueueHandler implements InvocationHandler {
@@ -27,7 +28,8 @@ public class QueueHandler implements InvocationHandler {
             implementation.publish(queue.value(), message);
         } else if(method.getAnnotation(Handle.class) != null) {
             Function<Object, Boolean> func = (Function<Object, Boolean>)args[args.length - 1];
-            implementation.listen(queue.value(), (x) -> func.apply(decoder.decode(x)));
+            ParameterizedType type = (ParameterizedType)method.getGenericParameterTypes()[args.length - 1];
+            implementation.listen(queue.value(), (x) -> func.apply(decoder.decode(x, type.getActualTypeArguments()[0])));
         }
 
         return null;

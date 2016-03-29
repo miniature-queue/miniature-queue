@@ -6,10 +6,11 @@ import com.github.mlk.queue.Decoder;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.lang.reflect.Type;
 
 public class SerializationDecoder implements Decoder {
     @Override
-    public Object decode(byte[] array) {
+    public Object decode(byte[] array, Type type) {
         try {
             ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(array));
             return ois.readObject();
