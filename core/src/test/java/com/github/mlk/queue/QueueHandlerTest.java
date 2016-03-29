@@ -1,8 +1,8 @@
-package com.github.mlk.queue.implementation;
+package com.github.mlk.queue;
 
-import com.github.mlk.queue.*;
-import com.github.mlk.queue.implementation.codex.StringDecoder;
-import com.github.mlk.queue.implementation.codex.StringEncoder;
+import com.github.mlk.queue.codex.StringDecoder;
+import com.github.mlk.queue.codex.StringEncoder;
+import com.github.mlk.queue.implementation.ServerImplementation;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;

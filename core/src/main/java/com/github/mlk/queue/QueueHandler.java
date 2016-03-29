@@ -1,20 +1,20 @@
-package com.github.mlk.queue.implementation;
+package com.github.mlk.queue;
 
-import com.github.mlk.queue.*;
+import com.github.mlk.queue.implementation.ServerImplementation;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.function.Function;
 
-public class QueueHandler implements InvocationHandler {
+class QueueHandler implements InvocationHandler {
     private final Encoder encoder;
     private final Decoder decoder;
     private final Queue queue;
     private final ServerImplementation implementation;
 
 
-    public QueueHandler(Encoder encoder, Decoder decoder, Queue queue, ServerImplementation implementation) {
+    QueueHandler(Encoder encoder, Decoder decoder, Queue queue, ServerImplementation implementation) {
         this.encoder = encoder;
         this.decoder = decoder;
         this.implementation = implementation;

@@ -1,6 +1,5 @@
 package com.github.mlk.queue;
 
-import com.github.mlk.queue.implementation.QueueHandler;
 import org.junit.Test;
 
 import java.lang.reflect.Proxy;

@@ -1,8 +1,7 @@
 package com.github.mlk.queue;
 
-import com.github.mlk.queue.implementation.QueueHandler;
-import com.github.mlk.queue.implementation.codex.SerializationDecoder;
-import com.github.mlk.queue.implementation.codex.SerializationEncoder;
+import com.github.mlk.queue.codex.SerializationDecoder;
+import com.github.mlk.queue.codex.SerializationEncoder;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -10,6 +9,9 @@ import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.function.Function;
 
+/** The entry point to miniature-queue. Set up the builder then use `target` to register queues.
+ *
+ */
 public class Queuify {
     public static Builder builder() {
         return new Builder();
@@ -39,6 +41,12 @@ public class Queuify {
             return this;
         }
 
+        /** Creates a queue based on the current configuration of the builder.
+         *
+         * @param clazz The target queue.
+         * @param <T> The target queue.
+         * @return An instance of the queue.
+         */
         public <T> T target(Class<T> clazz) {
             verifyNotNull(clazz);
             verifyIsInterface(clazz);
@@ -47,8 +55,6 @@ public class Queuify {
             verifyAllHandleMethodsAreValid(clazz);
             verifyHasServer();
             Queue queue = verifyHasQueueAnnotation(clazz);
-
-
 
             return clazz.cast(Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] {clazz}, new QueueHandler(encoder, decoder, queue, server.getImplementation())));
         }

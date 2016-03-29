@@ -1,4 +1,4 @@
-package com.github.mlk.queue.implementation.codex;
+package com.github.mlk.queue.codex;
 
 import com.github.mlk.queue.CodexException;
 import com.github.mlk.queue.Decoder;
@@ -6,6 +6,7 @@ import com.github.mlk.queue.Decoder;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 
+/** Can only handle strings in UTF-8. */
 public class StringDecoder implements Decoder {
     @Override
     public Object decode(byte[] array, Type type) throws CodexException {

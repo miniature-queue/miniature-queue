@@ -1,4 +1,4 @@
-package com.github.mlk.queue.implementation.codex;
+package com.github.mlk.queue.codex;
 
 import com.github.mlk.queue.CodexException;
 import com.github.mlk.queue.Decoder;
@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.Type;
 
+/** Utilizes Java Serialization. This is the default. */
 public class SerializationDecoder implements Decoder {
     @Override
     public Object decode(byte[] array, Type type) {
