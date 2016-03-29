@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.mlk</groupId>
-    <artifactId>miniature-queue-core</artifactId>
+    <artifactId>miniature-queue-rabbitmq</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Miniature Queue: Core</name>
+    <name>Miniature Queue: Rabbit MQ</name>
 
     <description>TBA.</description>
-    <url>https://github.com/mlk/miniature-queue/core</url>
+    <url>https://github.com/mlk/miniature-queue/rabbitmq</url>
 
     <licenses>
         <license>
@@ -47,6 +47,16 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>1.9.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.mlk</groupId>
+            <artifactId>miniature-queue-core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>3.6.1</version>
         </dependency>
     </dependencies>
 

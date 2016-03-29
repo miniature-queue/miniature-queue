@@ -13,3 +13,9 @@ hs_err_pid*
 
 core/.idea/*
 core/*.iml
+core/target
+
+rabbitmq/.idea/*
+rabbitmq/*.iml
+rabbitmq/target
+
