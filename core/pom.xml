@@ -4,7 +4,7 @@
 
     <groupId>com.github.mlk</groupId>
     <artifactId>miniature-queue-core</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>Miniature Queue: Core</name>
 
     <description>TBA.</description>
