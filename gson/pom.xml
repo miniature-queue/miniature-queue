@@ -4,7 +4,7 @@
 
     <groupId>com.github.mlk</groupId>
     <artifactId>miniature-queue-gson</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>Miniature Queue: GSON</name>
 
     <description>TBA.</description>
