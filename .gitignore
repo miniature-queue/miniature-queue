@@ -22,3 +22,7 @@ rabbitmq/target
 gson/.idea
 gson/*.iml
 gson/target
+
+jackson/.idea
+jackson/*.iml
+jackson/target
