@@ -4,7 +4,7 @@
 
     <groupId>com.github.mlk</groupId>
     <artifactId>miniature-queue-rabbitmq</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.1-java7</version>
     <name>Miniature Queue: Rabbit MQ</name>
 
     <description>TBA.</description>
