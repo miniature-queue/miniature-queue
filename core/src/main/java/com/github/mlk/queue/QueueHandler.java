@@ -1,11 +1,11 @@
 package com.github.mlk.queue;
 
 import com.github.mlk.queue.implementation.ServerImplementation;
+import com.google.common.base.Function;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.util.function.Function;
 
 class QueueHandler implements InvocationHandler {
     private final Encoder encoder;
@@ -27,9 +27,15 @@ class QueueHandler implements InvocationHandler {
             byte[] message = encoder.encode(args[args.length - 1]);
             implementation.publish(queue.value(), message);
         } else if(method.getAnnotation(Handle.class) != null) {
-            Function<Object, Boolean> func = (Function<Object, Boolean>)args[args.length - 1];
-            ParameterizedType type = (ParameterizedType)method.getGenericParameterTypes()[args.length - 1];
-            implementation.listen(queue.value(), (x) -> func.apply(decoder.decode(x, type.getActualTypeArguments()[0])));
+            final Function<Object, Boolean> func = (Function<Object, Boolean>)args[args.length - 1];
+            final ParameterizedType type = (ParameterizedType)method.getGenericParameterTypes()[args.length - 1];
+            implementation.listen(queue.value(), new Function<byte[], Boolean>() {
+
+                @Override
+                public Boolean apply(byte[] x) {
+                    return func.apply(decoder.decode(x, type.getActualTypeArguments()[0]));
+                }
+            } );
         }
 
         return null;

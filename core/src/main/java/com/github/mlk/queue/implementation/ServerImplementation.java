@@ -1,8 +1,8 @@
 package com.github.mlk.queue.implementation;
 
 import com.github.mlk.queue.QueueException;
+import com.google.common.base.Function;
 
-import java.util.function.Function;
 
 /** This should be implemented by MQ Clients.
  *

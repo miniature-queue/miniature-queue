@@ -3,6 +3,7 @@ package com.github.mlk.queue;
 import com.github.mlk.queue.codex.StringDecoder;
 import com.github.mlk.queue.codex.StringEncoder;
 import com.github.mlk.queue.implementation.ServerImplementation;
+import com.google.common.base.Function;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
@@ -10,7 +11,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -39,7 +39,7 @@ public class QueueHandlerTest {
 
     @Test
     public void whenMethodHasHandleThenCallTheQueueName() throws UnsupportedEncodingException {
-        List<String> actions = new ArrayList<>();
+        final List<String> actions = new ArrayList<>();
 
         Encoder encoder = new StringEncoder();
         Decoder decoder = new StringDecoder();
@@ -49,7 +49,13 @@ public class QueueHandlerTest {
         HandleTestObject subjectProxy = (HandleTestObject) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] {HandleTestObject.class},
                 new QueueHandler(encoder, decoder, new QueueImp("queueName"), implementation) );
 
-        subjectProxy.consume((x) -> { actions.add(x); return true; });
+        subjectProxy.consume(new Function<String, Boolean>() {
+            @Override
+            public Boolean apply(String x) {
+                actions.add(x);
+                return true;
+            }
+        });
 
         implementation.action.apply("Hello".getBytes("UTF-8"));
 

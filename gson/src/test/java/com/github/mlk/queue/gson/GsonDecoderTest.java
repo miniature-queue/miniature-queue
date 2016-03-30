@@ -11,7 +11,7 @@ public class GsonDecoderTest {
         GsonDecoder decoder = new GsonDecoder();
         GsonEncoder encoder = new GsonEncoder();
 
-        assertThat(decoder.decode(encoder.encode("Fred"), String.class), is("Fred"));
+        assertThat(decoder.decode(encoder.encode("Fred"), String.class), is((Object)"Fred"));
     }
 
 }

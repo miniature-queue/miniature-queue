@@ -2,12 +2,12 @@ package com.github.mlk.queue.rabbitmq.implementation;
 
 import com.github.mlk.queue.QueueException;
 import com.github.mlk.queue.implementation.ServerImplementation;
+import com.google.common.base.Function;
 import com.rabbitmq.client.*;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,9 +38,9 @@ public class RabbitMqServerImplementation implements ServerImplementation {
     }
 
     @Override
-    public void listen(String queueName, Function<byte[], Boolean> action) throws QueueException {
+    public void listen(String queueName, final Function<byte[], Boolean> action) throws QueueException {
         try {
-            Channel channel = getChannel();
+            final Channel channel = getChannel();
 
             channel.queueDeclare(queueName, false, false, false, null);
 

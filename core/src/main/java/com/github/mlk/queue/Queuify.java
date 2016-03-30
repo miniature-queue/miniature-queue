@@ -2,12 +2,12 @@ package com.github.mlk.queue;
 
 import com.github.mlk.queue.codex.SerializationDecoder;
 import com.github.mlk.queue.codex.SerializationEncoder;
+import com.google.common.base.Function;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
-import java.util.function.Function;
 
 /** The entry point to miniature-queue. Set up the builder then use `target` to register queues.
  *

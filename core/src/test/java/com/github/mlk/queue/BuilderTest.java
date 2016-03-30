@@ -1,9 +1,9 @@
 package com.github.mlk.queue;
 
+import com.google.common.base.Function;
 import org.junit.Test;
 
 import java.lang.reflect.Proxy;
-import java.util.function.Function;
 
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
