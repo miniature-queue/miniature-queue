@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Queue {
-    /** The name of the queue. */
+    /** @return The name of the queue. */
     String value();
 }
