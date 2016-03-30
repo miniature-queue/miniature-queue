@@ -3,6 +3,7 @@ package com.github.mlk.queue.gson;
 import com.github.mlk.queue.CodexException;
 import com.github.mlk.queue.Decoder;
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
@@ -26,7 +27,11 @@ public class GsonDecoder implements Decoder {
 
     @Override
     public Object decode(byte[] array, Type type) throws CodexException {
-        return gson.fromJson(new String(array, charset), type);
+        try {
+            return gson.fromJson(new String(array, charset), type);
+        } catch(JsonParseException e) {
+            throw new CodexException(e.getMessage(), e, array);
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.github.mlk.queue.gson;
 
+import com.github.mlk.queue.CodexException;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
@@ -14,4 +15,8 @@ public class GsonDecoderTest {
         assertThat(decoder.decode(encoder.encode("Fred"), String.class), is("Fred"));
     }
 
+    @Test(expected = CodexException.class)
+    public void readExceptionsAreWrapped() {
+        new GsonDecoder().decode("not json".getBytes(), String.class);
+    }
 }
