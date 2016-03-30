@@ -2,6 +2,7 @@ package com.github.mlk.queue;
 
 import com.github.mlk.queue.codex.SerializationDecoder;
 import com.github.mlk.queue.codex.SerializationEncoder;
+import com.github.mlk.queue.implementation.Module;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -38,6 +39,11 @@ public class Queuify {
         public Builder server(Server server) {
             verifyNotNull(server);
             this.server = server;
+            return this;
+        }
+
+        public Builder with(Module module) {
+            module.bind(this);
             return this;
         }
 

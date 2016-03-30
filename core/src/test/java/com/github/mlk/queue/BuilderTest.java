@@ -1,5 +1,6 @@
 package com.github.mlk.queue;
 
+import com.github.mlk.queue.implementation.Module;
 import org.junit.Test;
 
 import java.lang.reflect.Proxy;
@@ -8,6 +9,7 @@ import java.util.function.Function;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class BuilderTest {
@@ -44,6 +46,16 @@ public class BuilderTest {
     @Test(expected = IllegalArgumentException.class)
     public void cannotRequestTargetThatIsNotInterface() {
         Queuify.builder().server(mock(Server.class)).target(PublishClass.class);
+    }
+
+    @Test
+    public void withCallsTheGivenModule() {
+        Queuify.Builder subject = Queuify.builder();
+        Module module = mock(Module.class);
+
+        subject.with(module);
+
+        verify(module).bind(subject);
     }
 
     @Test(expected = IllegalArgumentException.class)
