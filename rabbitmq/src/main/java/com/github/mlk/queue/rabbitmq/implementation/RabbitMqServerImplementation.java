@@ -15,12 +15,15 @@ public class RabbitMqServerImplementation implements ServerImplementation {
     private final Logger log = Logger.getLogger(getClass().getName());
 
     private final ConnectionFactory factory;
+    private final boolean autoAck;
     private Connection connection;
     private ThreadLocal<Channel> channels = new ThreadLocal<>();
     private ReentrantLock lock = new ReentrantLock();
 
-    public RabbitMqServerImplementation(ConnectionFactory factory) {
+
+    public RabbitMqServerImplementation(ConnectionFactory factory, boolean autoAck) {
         this.factory = factory;
+        this.autoAck = autoAck;
     }
 
     @Override
@@ -40,7 +43,7 @@ public class RabbitMqServerImplementation implements ServerImplementation {
     @Override
     public void listen(String queueName, Function<byte[], Boolean> action) throws QueueException {
         try {
-            Channel channel = getChannel();
+            Channel channel = getConnection().createChannel();
 
             channel.queueDeclare(queueName, false, false, false, null);
 
@@ -49,16 +52,18 @@ public class RabbitMqServerImplementation implements ServerImplementation {
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body)
                         throws IOException {
                     if (action.apply(body)) {
-                        channel.basicAck(envelope.getDeliveryTag(), false);
+                        if(!autoAck) {
+                            channel.basicAck(envelope.getDeliveryTag(), false);
+                        }
                     }
 
                 }
             };
 
-            channel.basicConsume(queueName, false, consumer);
+            channel.basicConsume(queueName, autoAck, consumer);
         } catch (IOException | TimeoutException ioe) {
             close();
-            throw new QueueException("failed to enqueue onto queue: " + queueName, ioe);
+            throw new QueueException("failed to listen to queue: " + queueName, ioe);
         }
     }
 
