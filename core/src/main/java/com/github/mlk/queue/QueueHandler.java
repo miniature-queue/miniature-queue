@@ -25,11 +25,11 @@ class QueueHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if(method.getAnnotation(Publish.class) != null) {
             byte[] message = encoder.encode(args[args.length - 1]);
-            implementation.publish(queue.value(), message);
+            implementation.publish(queue, message);
         } else if(method.getAnnotation(Handle.class) != null) {
             Function<Object, Boolean> func = (Function<Object, Boolean>)args[args.length - 1];
             ParameterizedType type = (ParameterizedType)method.getGenericParameterTypes()[args.length - 1];
-            implementation.listen(queue.value(), (x) -> func.apply(decoder.decode(x, type.getActualTypeArguments()[0])));
+            implementation.listen(queue, (x) -> func.apply(decoder.decode(x, type.getActualTypeArguments()[0])));
         }
 
         return null;

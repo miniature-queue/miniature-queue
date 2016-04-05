@@ -11,4 +11,6 @@ import java.lang.annotation.Target;
 public @interface Queue {
     /** @return The name of the queue. */
     String value();
+    /** @return The type of queue to connect to. */
+    QueueType queueTypeHint() default QueueType.WORKER_QUEUE;
 }

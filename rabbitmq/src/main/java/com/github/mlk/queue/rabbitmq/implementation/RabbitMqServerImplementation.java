@@ -1,6 +1,8 @@
 package com.github.mlk.queue.rabbitmq.implementation;
 
+import com.github.mlk.queue.Queue;
 import com.github.mlk.queue.QueueException;
+import com.github.mlk.queue.QueueType;
 import com.github.mlk.queue.implementation.ServerImplementation;
 import com.rabbitmq.client.*;
 
@@ -27,25 +29,46 @@ public class RabbitMqServerImplementation implements ServerImplementation {
     }
 
     @Override
-    public void publish(String queueName, byte[] message) throws QueueException {
-        try {
-            Channel channel = getChannel();
+    public void publish(Queue queue, byte[] message) throws QueueException {
+        if(queue.queueTypeHint().equals(QueueType.WORKER_QUEUE)) {
+            try {
+                Channel channel = getChannel();
 
-            channel.queueDeclare(queueName, false, false, false, null);
+                channel.queueDeclare(queue.value(), false, false, false, null);
 
-            channel.basicPublish("", queueName, null, message);
-        } catch (IOException | TimeoutException ioe) {
-            close();
-            throw new QueueException("failed to enqueue onto queue: " + queueName, ioe);
+                channel.basicPublish("", queue.value(), null, message);
+            } catch (IOException | TimeoutException ioe) {
+                close();
+                throw new QueueException("failed to enqueue onto queue: " + queue.value(), ioe);
+            }
+        } else  {
+            try {
+                Channel channel = getChannel();
+
+                channel.exchangeDeclare(queue.value(), "fanout");
+
+                channel.basicPublish(queue.value(), "" , null, message);
+            } catch (IOException | TimeoutException ioe) {
+                close();
+                throw new QueueException("failed to enqueue onto queue: " + queue.value(), ioe);
+            }
         }
     }
 
     @Override
-    public void listen(String queueName, Function<byte[], Boolean> action) throws QueueException {
+    public void listen(Queue queue, Function<byte[], Boolean> action) throws QueueException {
         try {
             Channel channel = getConnection().createChannel();
 
-            channel.queueDeclare(queueName, false, false, false, null);
+            String queueName = queue.value();
+
+            if(queue.queueTypeHint().equals(QueueType.WORKER_QUEUE)) {
+                channel.queueDeclare(queueName, false, false, false, null);
+            } else {
+                channel.exchangeDeclare(queue.value(), "fanout");
+                queueName = channel.queueDeclare().getQueue();
+                channel.queueBind(queueName, queue.value(), "");
+            }
 
             Consumer consumer = new DefaultConsumer(channel) {
                 @Override
@@ -63,7 +86,7 @@ public class RabbitMqServerImplementation implements ServerImplementation {
             channel.basicConsume(queueName, autoAck, consumer);
         } catch (IOException | TimeoutException ioe) {
             close();
-            throw new QueueException("failed to listen to queue: " + queueName, ioe);
+            throw new QueueException("failed to listen to queue: " + queue.value(), ioe);
         }
     }
 

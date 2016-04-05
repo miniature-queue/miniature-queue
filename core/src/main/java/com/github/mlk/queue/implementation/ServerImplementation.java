@@ -1,5 +1,6 @@
 package com.github.mlk.queue.implementation;
 
+import com.github.mlk.queue.Queue;
 import com.github.mlk.queue.QueueException;
 
 import java.util.function.Function;
@@ -17,11 +18,11 @@ public interface ServerImplementation {
 
     /** Publishes a message to the given queue.
      *
-     * @param queueName The queue to push the message to.
+     * @param queue The queue to push the message to.
      * @param message The message to be pushed.
      * @throws QueueException Any issues sending this message.
      */
-    void publish(String queueName, byte[] message) throws QueueException;
+    void publish(Queue queue, byte[] message) throws QueueException;
 
     /** Starts listening to the given queue.
      *
@@ -29,7 +30,7 @@ public interface ServerImplementation {
      * @param action    The event handler.
      * @throws QueueException Any issues registering this event handler.
      */
-    void listen(String queue, Function<byte[], Boolean> action) throws QueueException;
+    void listen(Queue queue, Function<byte[], Boolean> action) throws QueueException;
 
     /** Closes the connection to the server.
      * This MUST NOT throw an exception. Implementations may log exceptions via the appropriate logging framework for the MQ. If the MQ does not specify a framework JUL should be used.

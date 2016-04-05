@@ -20,6 +20,7 @@ public class QueueHandlerTest {
 
     @Test
     public void whenMethodHasPublishThenCallTheQueueName() {
+        QueueImp queue = new QueueImp("queueName");
         Object param = new Object();
         byte[] paramAsArray = new byte[0];
 
@@ -30,11 +31,11 @@ public class QueueHandlerTest {
         ServerImplementation implementation = mock(ServerImplementation.class);
 
         PublishTestObject subjectProxy = (PublishTestObject) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] {PublishTestObject.class},
-                new QueueHandler(encoder, decoder, new QueueImp("queueName") , implementation) );
+                new QueueHandler(encoder, decoder, queue, implementation) );
 
         subjectProxy.queue(param);
 
-        verify(implementation).publish("queueName", paramAsArray);
+        verify(implementation).publish(queue, paramAsArray);
     }
 
     @Test
@@ -70,6 +71,11 @@ public class QueueHandlerTest {
         }
 
         @Override
+        public QueueType queueTypeHint() {
+            return QueueType.WORKER_QUEUE;
+        }
+
+        @Override
         public Class<? extends Annotation> annotationType() {
             return Queue.class;
         }
@@ -90,16 +96,16 @@ interface HandleTestObject {
 
 class RecordingServerImplementation implements ServerImplementation {
 
-    String queue;
+    Queue queue;
     Function<byte[], Boolean> action;
 
     @Override
-    public void publish(String queueName, byte[] message) {
+    public void publish(Queue queueName, byte[] message) {
 
     }
 
     @Override
-    public void listen(String queue, Function<byte[], Boolean> action) {
+    public void listen(Queue queue, Function<byte[], Boolean> action) {
         this.queue = queue;
         this.action = action;
     }
