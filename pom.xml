@@ -1,0 +1,16 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>miniature-queue</artifactId>
+    <name>Miniature Queue: All</name>
+    <groupId>com.github.mlk</groupId>
+    <version>0.0.2-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>core</module>
+        <module>gson</module>
+	<module>jackson</module>
+	<module>rabbitmq</module>
+    </modules>
+</project>
