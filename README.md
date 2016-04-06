@@ -1,5 +1,7 @@
 # miniature-queue
 
+[![Build Status](https://travis-ci.org/mlk/miniature-queue.svg?branch=master)](https://travis-ci.org/mlk/miniature-queue)
+
 `miniature-queue` is a MQ abstraction layer inspired by [feign](https://github.com/Netflix/feign) and [JDBI](http://jdbi.org/).
 
 ## Example
