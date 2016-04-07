@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /** The entry point to miniature-queue. Set up the builder then use `target` to register queues.
@@ -78,21 +79,26 @@ public class Queuify {
                         throw new IllegalArgumentException(method.getName() + " must have one param");
                     }
 
-                    if (!paramClasses[paramClasses.length - 1].equals(Function.class)) {
-                        throw new IllegalArgumentException(method.getName() + " parameter must be a Function");
-                    } else {
+                    if (paramClasses[paramClasses.length - 1].equals(Function.class)) {
                         ParameterizedType type = (ParameterizedType) method.getGenericParameterTypes()[paramClasses.length - 1];
                         Type returnType = type.getActualTypeArguments()[1];
 
-                        if(!returnType.equals(Boolean.class)) {
+                        if (!returnType.equals(Boolean.class)) {
                             throw new IllegalArgumentException(method.getName() + " function must return a boolean");
                         }
 
                         Type inputType = type.getActualTypeArguments()[0];
-                        if(!decoder.canHandle((Class<?>) inputType)) {
+                        if (!decoder.canHandle((Class<?>) inputType)) {
                             throw new IllegalArgumentException(method.getName() + " function must take an object the decoder can process");
                         }
-
+                    } else if (paramClasses[paramClasses.length - 1].equals(Consumer.class)) {
+                        ParameterizedType type = (ParameterizedType) method.getGenericParameterTypes()[paramClasses.length - 1];
+                        Type inputType = type.getActualTypeArguments()[0];
+                        if (!decoder.canHandle((Class<?>) inputType)) {
+                            throw new IllegalArgumentException(method.getName() + " function must take an object the decoder can process");
+                        }
+                    } else {
+                        throw new IllegalArgumentException(method.getName() + " parameter must be a Function or Consumer");
                     }
 
                 }

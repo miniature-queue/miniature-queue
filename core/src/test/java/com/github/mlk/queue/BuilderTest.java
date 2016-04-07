@@ -4,6 +4,7 @@ import com.github.mlk.queue.implementation.Module;
 import org.junit.Test;
 
 import java.lang.reflect.Proxy;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
@@ -102,6 +103,25 @@ public class BuilderTest {
     public void handleMustTakeFunctionThatReturnsBoolean() {
         Queuify.builder().server(mock(Server.class)).target(HandleDoesNotReturnBoolean.class);
     }
+
+    @Test
+    public void handlerAlsoSupportConsumerMethods() {
+        HandleAlsoSupportsConsumer subject = Queuify
+                .builder()
+                .server(mock(Server.class))
+                .target(HandleAlsoSupportsConsumer.class);
+
+        assertThat(Proxy.getInvocationHandler(subject), instanceOf(QueueHandler.class));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void cannotRequestTargetThatTheDecoderCanNotDecode_Consumer() {
+        Decoder decode = mock(Decoder.class);
+        when(decode.canHandle(String.class)).thenReturn(false);
+
+        Queuify.builder().server(mock(Server.class)).decoder(decode).target(HandleAlsoSupportsConsumer.class);
+    }
+
 }
 
 @Queue("the_queue")
@@ -120,6 +140,12 @@ interface HandleOk {
 interface HandleDoesNotReturnBoolean {
     @Handle
     void consume(Function<String, String> newMessage);
+}
+
+@Queue("the_queue")
+interface HandleAlsoSupportsConsumer {
+    @Handle
+    void consume(Consumer<String> newMessage);
 }
 
 @Queue("the_queue")

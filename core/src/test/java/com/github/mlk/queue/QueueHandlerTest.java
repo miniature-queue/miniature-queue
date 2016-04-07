@@ -10,6 +10,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static org.hamcrest.core.Is.is;
@@ -57,6 +58,25 @@ public class QueueHandlerTest {
         assertThat(actions.get(0), is("Hello"));
     }
 
+    @Test
+    public void whenMethodHasHandleThenCallTheQueueName_Consumer() throws UnsupportedEncodingException {
+        List<String> actions = new ArrayList<>();
+
+        Encoder encoder = new StringEncoder();
+        Decoder decoder = new StringDecoder();
+
+        RecordingServerImplementation implementation = new RecordingServerImplementation();
+
+        ConsumerHandleTestObject subjectProxy = (ConsumerHandleTestObject) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[] {ConsumerHandleTestObject.class},
+                new QueueHandler(encoder, decoder, new QueueImp("queueName"), implementation) );
+
+        subjectProxy.consume(actions::add);
+
+        implementation.action.apply("Hello".getBytes("UTF-8"));
+
+        assertThat(actions.get(0), is("Hello"));
+    }
+
     static class QueueImp implements Queue {
 
         private final String queueName;
@@ -93,6 +113,13 @@ interface HandleTestObject {
     @Handle
     void consume(Function<String, Boolean> handler);
 }
+
+@Queue("queueName")
+interface ConsumerHandleTestObject {
+    @Handle
+    void consume(Consumer<String> handler);
+}
+
 
 class RecordingServerImplementation implements ServerImplementation {
 
