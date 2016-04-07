@@ -1,6 +1,6 @@
 package com.github.mlk.queue.jedis.codex;
 
-/** Encodes & decodes byte arrays to Strings. */
+/** Encodes &amp; decodes byte arrays to Strings. */
 public interface ToString {
     /** Converts a string from RADIS into a byte array.
      *
