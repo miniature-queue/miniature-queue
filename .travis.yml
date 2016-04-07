@@ -5,4 +5,4 @@ jdk:
 
 services: 
   - rabbitmq
-  - radis
+  - redis-server
