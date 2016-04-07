@@ -24,8 +24,13 @@ mq.publishMessage("Hello");
 
 ## MQs support
 
-Curently only RabbitMQ is supported in the `minature-queue-rabbitmq` package.
+ * [Rabbit MQ](https://www.rabbitmq.com/) via  [`minature-queue-rabbitmq`](https://github.com/mlk/miniature-queue/tree/master/rabbitmq) package.
+ * [Redis](http://redis.io/) via the [`miniature-queue-jedis`](https://github.com/mlk/miniature-queue/tree/master/jedis) package. Note: This only supports FAN_OUT queues.
 
 ## Encoding/Decoding objects
 
-Currently sending raw strings in UTF-8, Java Serialized objects and JSON (using GSON) is supported. Raw strings and Java Serialization are both supported natively, GSON is via the `minature-queue-gson` package.
+ * Java serialization (in core)
+ * UTF-8 Strings (in core)
+ * JSON via [GSON](https://github.com/google/gson) via [`miniature-queue-gson`](https://github.com/mlk/miniature-queue/tree/master/gson) package.
+ * JSON via [Jackson](https://github.com/FasterXML/jackson) via the [`miniature-queue-jackson`](https://github.com/mlk/miniature-queue/tree/master/jackson) package.
+
