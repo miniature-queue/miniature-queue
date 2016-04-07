@@ -20,7 +20,6 @@ public class JedisServer extends Server {
         JedisPool jedis = new JedisPool(new JedisPoolConfig(), host);
 
         implementation = new JedisServerImplementation(jedis, Thread::new, new Base64ToString());
-
     }
 
     /** @param jedis The connection factory for JEDIS.

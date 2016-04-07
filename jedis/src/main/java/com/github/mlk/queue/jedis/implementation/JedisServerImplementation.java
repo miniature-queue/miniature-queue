@@ -29,8 +29,6 @@ public class JedisServerImplementation implements ServerImplementation {
     private Thread listenerThread;
     private JedisException exceptionInListenerThread;
 
-
-
     public JedisServerImplementation(JedisPool pool, ThreadFactory threadFactory, ToString toStringCodex) {
         this.pool = pool;
         this.threadFactory = threadFactory;
