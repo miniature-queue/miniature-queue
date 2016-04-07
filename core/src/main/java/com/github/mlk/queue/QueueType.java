@@ -9,6 +9,8 @@ public enum QueueType {
      * then the queue item is passed to a different worker.
      */
     WORKER_QUEUE,
-    /** A fanout (or Publish/Subscribe) queue will give every handler a copy of the queue item. If the queue item. */
+    /** A fanout (or Publish/Subscribe) queue will give every handler a copy of the queue item. If the queue item is not
+     * acknowledged then it is up to the queue implementation to decide if and when to resend it.
+     */
     FANOUT_QUEUE
 }

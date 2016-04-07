@@ -8,6 +8,7 @@ public interface Decoder {
      * Notes for implementors:
      *  - This should throw `CodexException` when it comes across something it can not decode.
      *  - Provide builders for encoders when it makes sense.
+     *  - Provide a Module to ease setup.
      *
      * @param array The raw object
      * @param type The expected type returned
@@ -18,7 +19,7 @@ public interface Decoder {
 
     /** Can this decoder handle the given class. This is called during proxy construction and will cause the application to fail early.
      *
-     * @param clazz The class ti check
+     * @param clazz The class to check
      * @return true if this decode can decode the given class.
      */
     boolean canHandle(Class<?> clazz);
