@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/mlk/miniature-queue.svg?branch=master)](https://travis-ci.org/mlk/miniature-queue)
 
-`miniature-queue` is a MQ abstraction layer inspired by [feign](https://github.com/Netflix/feign) and [JDBI](http://jdbi.org/). It uses annotation based meta-programming to bind an interface to an MQ implementation.
+`miniature-queue` is a Message Queue abstraction layer inspired by [feign](https://github.com/Netflix/feign) and [JDBI](http://jdbi.org/). It uses annotation based meta-programming to bind an interface to an Message Queue implementation.
 
 ## Example
 
@@ -15,11 +15,11 @@ interface Chat {
     void receiveMessage(Function<String, Boolean> action);
 }
 
-MessageQueue mq = Queuify.builder().server(createServerObject()).target(MessageQueue.class);
+MessageQueue queue = Queuify.builder().server(createServerObject()).target(MessageQueue.class);
 // Set up a listener for new messages.
-mq.receiveMessage((x) -> { System.out.println(x); return true; } );
+queue.receiveMessage((x) -> { System.out.println(x); return true; } );
 // Sends hello down the line
-mq.publishMessage("Hello");
+queue.publishMessage("Hello");
 ```
 
 ## Queue types
@@ -28,10 +28,10 @@ mq.publishMessage("Hello");
 In a worker queue each message is sent to only one listener. The message publisher sends a fire-and-forget message out to the queue for the work to be done.
 
 ### Fanout (or Publish/Subscribe)
-In a fanout queue each message is sent to every listener.
+In a fanout queue each message is sent to every listener. The message publisher sends a fire-and-forget message out to the queue for the listners to be informed.
 
 
-## MQs support
+## Message Queues supported
 
  * [Rabbit MQ](https://www.rabbitmq.com/) via  [`minature-queue-rabbitmq`](https://github.com/mlk/miniature-queue/tree/master/rabbitmq) package.
  * [Redis](http://redis.io/) via the [`miniature-queue-jedis`](https://github.com/mlk/miniature-queue/tree/master/jedis) package. Note: This only supports FAN_OUT queues.
