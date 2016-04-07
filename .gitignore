@@ -1,3 +1,5 @@
+*~
+
 *.class
 
 # Mobile Tools for Java (J2ME)
@@ -26,3 +28,7 @@ gson/target
 jackson/.idea
 jackson/*.iml
 jackson/target
+
+jedis/.idea
+jedis/*.iml
+jedis/target

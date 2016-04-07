@@ -12,5 +12,6 @@
         <module>gson</module>
 	<module>jackson</module>
 	<module>rabbitmq</module>
+	<module>jedis</module>
     </modules>
 </project>
