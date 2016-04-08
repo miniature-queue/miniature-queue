@@ -19,14 +19,14 @@ public class StringEncoderTest {
 
     @Test
     public void canDecodeStrings() {
-        StringDecoder subject = new StringDecoder();
+        StringEncoder subject = new StringEncoder();
 
         assertTrue(subject.canHandle(String.class));
     }
 
     @Test
     public void canNotDecodeNoneStrings() {
-        StringDecoder subject = new StringDecoder();
+        StringEncoder subject = new StringEncoder();
 
         assertFalse(subject.canHandle(StringBuilder.class));
     }
