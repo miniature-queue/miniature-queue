@@ -1,6 +1,6 @@
 # miniature-queue
 
-[![Build Status](https://travis-ci.org/mlk/miniature-queue.svg?branch=master)](https://travis-ci.org/mlk/miniature-queue)
+[![Build Status](https://travis-ci.org/mlk/miniature-queue.svg?branch=master)](https://travis-ci.org/mlk/miniature-queue) [![codecov.io](https://codecov.io/github/mlk/miniature-queue/coverage.svg?branch=master)](https://codecov.io/github/mlk/miniature-queue?branch=master)
 
 `miniature-queue` is a Message Queue abstraction layer inspired by [feign](https://github.com/Netflix/feign) and [JDBI](http://jdbi.org/). It uses annotation based meta-programming to bind an interface to an Message Queue implementation.
 
