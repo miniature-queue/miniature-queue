@@ -1,5 +1,7 @@
 *~
 
+.idea/
+
 *.class
 
 # Mobile Tools for Java (J2ME)
@@ -16,6 +18,8 @@ hs_err_pid*
 core/.idea/*
 core/*.iml
 core/target
+
+*.iml
 
 rabbitmq/.idea/*
 rabbitmq/*.iml

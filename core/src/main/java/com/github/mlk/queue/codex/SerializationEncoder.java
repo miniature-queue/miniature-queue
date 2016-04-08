@@ -6,6 +6,7 @@ import com.github.mlk.queue.Encoder;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /** Utilizes Java Serialization. This is the default. */
 public class SerializationEncoder implements Encoder {
@@ -26,6 +27,20 @@ public class SerializationEncoder implements Encoder {
 
     @Override
     public boolean canHandle(Class<?> clazz) {
-        return true;
+        if(clazz == null) {
+            return false;
+        }
+
+        if(clazz.equals(Serializable.class)) {
+            return true;
+        }
+
+        for (Class<?> cur : clazz.getInterfaces()) {
+            if(canHandle(cur)) {
+                return true;
+            }
+        }
+
+        return (canHandle(clazz.getSuperclass()));
     }
 }
