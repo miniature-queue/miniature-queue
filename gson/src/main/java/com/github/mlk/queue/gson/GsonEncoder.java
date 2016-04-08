@@ -28,7 +28,7 @@ public class GsonEncoder implements Encoder {
     public byte[] encode(Object object) throws CodexException {
         try {
             return gson.toJson(object).getBytes(charset);
-        } catch(JsonParseException e) {
+        } catch(UnsupportedOperationException | JsonParseException e) {
             throw new CodexException(e.getMessage(), e, object);
         }
     }
