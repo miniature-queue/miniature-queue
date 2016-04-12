@@ -1,6 +1,6 @@
 # miniature-queue
 
-[![Join the chat at https://gitter.im/mlk/miniature-queue](https://badges.gitter.im/mlk/miniature-queue.svg)](https://gitter.im/mlk/miniature-queue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/mlk/miniature-queue.svg?branch=master)](https://travis-ci.org/mlk/miniature-queue) [![codecov.io](https://codecov.io/github/mlk/miniature-queue/coverage.svg?branch=master)](https://codecov.io/github/mlk/miniature-queue?branch=master)
+[![Join the chat at https://gitter.im/mlk/miniature-queue](https://badges.gitter.im/mlk/miniature-queue.svg)](https://gitter.im/mlk/miniature-queue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/mlk/miniature-queue.svg?branch=master)](https://travis-ci.org/mlk/miniature-queue) [![codecov.io](https://codecov.io/github/mlk/miniature-queue/coverage.svg?branch=master)](https://codecov.io/github/mlk/miniature-queue?branch=master) [API Docs](pi.michael-lloyd-lee.me.uk/miniature-queue/apidocs/index.html)
 
 `miniature-queue` is a Message Queue abstraction layer inspired by [feign](https://github.com/Netflix/feign) and [JDBI](http://jdbi.org/). It uses annotation based meta-programming to bind an interface to an Message Queue implementation.
 
@@ -43,3 +43,5 @@ In a fanout queue each message is sent to every listener. The message publisher 
  * JSON via [GSON](https://github.com/google/gson) via [`miniature-queue-gson`](https://github.com/mlk/miniature-queue/tree/master/gson) package.
  * JSON via [Jackson](https://github.com/FasterXML/jackson) via the [`miniature-queue-jackson`](https://github.com/mlk/miniature-queue/tree/master/jackson) package.
 
+
+[Maven Site](http://pi.michael-lloyd-lee.me.uk/miniature-queue/)
