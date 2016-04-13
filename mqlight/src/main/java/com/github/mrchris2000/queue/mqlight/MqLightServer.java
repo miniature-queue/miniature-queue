@@ -7,8 +7,13 @@ import com.ibm.mqlight.api.CompletionListener;
 import com.ibm.mqlight.api.NonBlockingClient;
 import com.ibm.mqlight.api.NonBlockingClientAdapter;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 public class MqLightServer extends Server {
+
+    private final Logger logger = Logger.getLogger(getClass().getName());
 
     private final MqLightServerImplementation implementation;
 
@@ -23,7 +28,7 @@ public class MqLightServer extends Server {
 
         NonBlockingClient client = NonBlockingClient.create(host, new NonBlockingClientAdapter() {
             public void onStarted(NonBlockingClient client, Void context) {
-                System.out.println("MQ Light client started");
+                logger.log(Level.INFO, "MQ Light client started");
             }
             public void onDrain(NonBlockingClient client, Void context) {}
         }, null);
@@ -31,11 +36,11 @@ public class MqLightServer extends Server {
             public void onSuccess(NonBlockingClient client,  // c == client
                                   Object ctx) {
                 // ... code for handling success of send operation
-                System.out.println("MQ Light client started");
+                logger.log(Level.INFO, "MQ Light client started");
             }
 
             public void onError(NonBlockingClient client, Object o, Exception e) {
-                System.out.println("MQ Light client failed" );
+                logger.log(Level.INFO, "MQ Light client failed" );
                 e.printStackTrace();
             }
         }, null);
