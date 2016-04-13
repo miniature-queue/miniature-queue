@@ -1,6 +1,6 @@
 # miniature-queue
 
-[![Join the chat at https://gitter.im/mlk/miniature-queue](https://badges.gitter.im/mlk/miniature-queue.svg)](https://gitter.im/mlk/miniature-queue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/mlk/miniature-queue.svg?branch=master)](https://travis-ci.org/mlk/miniature-queue) [![codecov.io](https://codecov.io/github/mlk/miniature-queue/coverage.svg?branch=master)](https://codecov.io/github/mlk/miniature-queue?branch=master) [API Docs](http://pi.michael-lloyd-lee.me.uk/miniature-queue/apidocs/index.html)
+[![Join the chat at https://gitter.im/mlk/miniature-queue](https://badges.gitter.im/mlk/miniature-queue.svg)](https://gitter.im/mlk/miniature-queue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/mlk/miniature-queue.svg?branch=master)](https://travis-ci.org/mlk/miniature-queue) [![codecov.io](https://codecov.io/github/mlk/miniature-queue/coverage.svg?branch=master)](https://codecov.io/github/mlk/miniature-queue?branch=master) [![API Docs](https://img.shields.io/badge/documentation-here-orange.svg)](http://pi.michael-lloyd-lee.me.uk/miniature-queue/apidocs/index.html)
 
 `miniature-queue` is a Message Queue abstraction layer inspired by [feign](https://github.com/Netflix/feign) and [JDBI](http://jdbi.org/). It uses annotation based meta-programming to bind an interface to an Message Queue implementation.
 
@@ -35,6 +35,7 @@ In a fanout queue each message is sent to every listener. The message publisher 
 
  * [Rabbit MQ](https://www.rabbitmq.com/) via  [`minature-queue-rabbitmq`](https://github.com/mlk/miniature-queue/tree/master/rabbitmq) package.
  * [Redis](http://redis.io/) via the [`miniature-queue-jedis`](https://github.com/mlk/miniature-queue/tree/master/jedis) package. Note: This only supports FAN_OUT queues.
+ * [MQLight](https://developer.ibm.com/messaging/mq-light/) via the [`miniature-queue-mqlight`](https://github.com/mlk/miniature-queue/tree/master/mqlight) package. Note: This is a work in progress.
 
 ## Encoding/Decoding objects
 

@@ -31,8 +31,10 @@ public class WorkerTest {
         one.receiveMessage((x) -> { oneReceiveMessage.set(true); return true; });
         two.receiveMessage((x) -> { twoReceiveMessage.set(true); return true; });
 
+        Thread.sleep(5000L);
+
         sender.publishMessage("msg");
-        Thread.sleep(100L);
+        Thread.sleep(500L);
 
         assertFalse(oneReceiveMessage.get() && twoReceiveMessage.get());
         assertTrue(oneReceiveMessage.get() || twoReceiveMessage.get());
