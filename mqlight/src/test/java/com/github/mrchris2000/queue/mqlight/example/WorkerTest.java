@@ -24,9 +24,9 @@ public class WorkerTest {
     public void whenItemPutOnQueueThenAllListenersRelieveACopy() throws InterruptedException {
         final AtomicBoolean oneReceiveMessage = new AtomicBoolean(false);
         final AtomicBoolean twoReceiveMessage = new AtomicBoolean(false);
-        WorkerExampleQueue one = Queuify.builder().server(new MqLightServer("amqp://user:password@localhost:5672")).target(WorkerExampleQueue.class);
-        WorkerExampleQueue two = Queuify.builder().server(new MqLightServer("amqp://user:password@localhost:5672")).target(WorkerExampleQueue.class);
-        WorkerExampleQueue sender = Queuify.builder().server(new MqLightServer("amqp://user:password@localhost:5672")).target(WorkerExampleQueue.class);
+        WorkerExampleQueue one = Queuify.builder().server(new MqLightServer("amqp://user:password@localhost")).target(WorkerExampleQueue.class);
+        WorkerExampleQueue two = Queuify.builder().server(new MqLightServer("amqp://user:password@localhost")).target(WorkerExampleQueue.class);
+        WorkerExampleQueue sender = Queuify.builder().server(new MqLightServer("amqp://user:password@localhost")).target(WorkerExampleQueue.class);
 
         one.receiveMessage((x) -> { oneReceiveMessage.set(true); return true; });
         two.receiveMessage((x) -> { twoReceiveMessage.set(true); return true; });
