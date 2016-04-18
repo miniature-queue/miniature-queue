@@ -8,6 +8,7 @@ import com.ibm.mqlight.api.*;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
@@ -30,14 +31,16 @@ public class MqLightServerImplementation implements ServerImplementation {
         if(queue.queueTypeHint().equals(QueueType.WORKER_QUEUE)) {
             try {
                 //ToDo: Implement other queue semantics
-                String decoded = new String(message, StandardCharsets.UTF_8);
+                String decoded = new String(message, StandardCharsets.ISO_8859_1);
                 client.send(queue.value(), decoded, null);
             } catch (Exception e) {
                 throw new QueueException("failed to enqueue onto queue: " + queue.value(), e);
             }
         } else  {
             try {
-                String decoded = new String(message, StandardCharsets.UTF_8);
+                //This is the currently implemented path.
+                //Charset encoding ensure 'bijectional' serialisation.
+                String decoded = new String(message, StandardCharsets.ISO_8859_1);
                 client.send(queue.value(), decoded, null);
             } catch (Exception ioe) {
                 throw new QueueException("failed to enqueue onto queue: " + queue.value(), ioe);
@@ -55,18 +58,28 @@ public class MqLightServerImplementation implements ServerImplementation {
                 switch (delivery.getType()) {
                     case BYTES:
                         BytesDelivery bd = (BytesDelivery)delivery;
+                        action.apply(bd.getData().array());
                         logger.log(Level.WARNING, bd.getData().toString());
+
                         break;
                     case STRING:
-                        StringDelivery sd = (StringDelivery)delivery;
-                        logger.log(Level.WARNING, sd.getData().toString());
+                        try {
+                            StringDelivery sd = (StringDelivery) delivery;
+                            String data = sd.getData();
+                            byte[] bytes = data.getBytes(StandardCharsets.ISO_8859_1);
+                           action.apply(bytes);
+                            logger.log(Level.INFO, data);
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
                         break;
                     case JSON:
                         JsonDelivery jd = (JsonDelivery)delivery;
-                        logger.log(Level.WARNING, jd.getRawData().toString());
+                        action.apply(jd.getRawData().getBytes());
+                        logger.log(Level.WARNING, jd.getRawData());
+
                         break;
                 }
-
             }
         }, new CompletionListener<Void>() {
                @Override
@@ -75,8 +88,8 @@ public class MqLightServerImplementation implements ServerImplementation {
                }
                @Override
                public void onError(NonBlockingClient c, Void ctx, Exception exception) {
-                   logger.log(Level.INFO, "Error:");
-                   exception.printStackTrace();
+                   logger.log(Level.SEVERE, "Error:"+ exception.getMessage());
+
                }
         }, null);
     }
@@ -100,7 +113,7 @@ public class MqLightServerImplementation implements ServerImplementation {
         lock.lock();
         try {
             if (client == null) {
-                throw new QueueException("asd", null);
+                throw new QueueException("Client currently null", null);
             }
             return client;
         } finally {

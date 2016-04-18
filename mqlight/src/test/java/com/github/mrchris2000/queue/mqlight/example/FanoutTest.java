@@ -26,6 +26,7 @@ public class FanoutTest {
 
         MqLightServer mqls =  new MqLightServer("amqp://user:password@localhost");
         MqLightServer mqls2 =  new MqLightServer("amqp://user:password@localhost");
+
         FanoutExampleQueue one = Queuify.builder().server(mqls).target(FanoutExampleQueue.class);
         FanoutExampleQueue two = Queuify.builder().server(mqls2).target(FanoutExampleQueue.class);
         FanoutExampleQueue sender = Queuify.builder().server(mqls).target(FanoutExampleQueue.class);
@@ -33,7 +34,6 @@ public class FanoutTest {
         one.receiveMessage((x) -> { oneReceiveMessage.set(true); return true; });
         two.receiveMessage((x) -> { twoReceiveMessage.set(true); return true; });
 
-        Thread.sleep(5000L);
 
         sender.publishMessage("msg");
         Thread.sleep(500L);

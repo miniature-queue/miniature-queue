@@ -36,8 +36,7 @@ public class MqLightServer extends Server {
             }
 
             public void onError(NonBlockingClient client, Object o, Exception e) {
-                logger.log(Level.WARNING, "MQ Light client failed" );
-                e.printStackTrace();
+                logger.log(Level.WARNING, "MQ Light client failed: " +e.getMessage() );
             }
         }, null);
         implementation = new MqLightServerImplementation(client);
