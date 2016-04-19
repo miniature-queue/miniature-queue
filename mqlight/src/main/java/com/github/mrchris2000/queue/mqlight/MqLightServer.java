@@ -20,12 +20,6 @@ public class MqLightServer extends Server {
     /** @param host The host (service in MQ Light parlance) to connect to. This will result in a default connection with this host.
      */
     public MqLightServer(String host) {
-        /*
-            -- Consult with Mike regarding best approach for adding connection options.
-        ClientOptions.ClientOptionsBuilder builder = ClientOptions.builder();
-        ClientOptions clientOpts = builder.build();
-        */
-
         NonBlockingClient client = NonBlockingClient.create(host, new NonBlockingClientAdapter() {
         }, null);
         client.start(new CompletionListener() {
@@ -43,7 +37,7 @@ public class MqLightServer extends Server {
 
     }
 
-    /** @param client The connection for MQ Light.
+    /** @param client A pre-constructed connection for MQ Light.
      */
     public MqLightServer(NonBlockingClient client) {
         implementation = new MqLightServerImplementation(client);
