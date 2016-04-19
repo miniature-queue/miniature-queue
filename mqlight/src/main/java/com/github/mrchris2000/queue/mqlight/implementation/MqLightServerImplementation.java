@@ -7,6 +7,7 @@ import com.github.mlk.queue.implementation.ServerImplementation;
 import com.ibm.mqlight.api.*;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -39,9 +40,7 @@ public class MqLightServerImplementation implements ServerImplementation {
         } else  {
             try {
                 //This is the currently implemented path.
-                //Charset encoding ensure 'bijectional' serialisation.
-                String decoded = new String(message, StandardCharsets.ISO_8859_1);
-                client.send(queue.value(), decoded, null);
+                client.send(queue.value(), ByteBuffer.wrap(message), null);
             } catch (Exception ioe) {
                 throw new QueueException("failed to enqueue onto queue: " + queue.value(), ioe);
             }
@@ -58,20 +57,17 @@ public class MqLightServerImplementation implements ServerImplementation {
                 switch (delivery.getType()) {
                     case BYTES:
                         BytesDelivery bd = (BytesDelivery)delivery;
-                        action.apply(bd.getData().array());
-                        logger.log(Level.WARNING, bd.getData().toString());
-
+                        ByteBuffer bb = bd.getData();
+                        byte[] bytes = bb.array();
+                        action.apply(bytes);
+                        logger.log(Level.INFO, new String(bytes));
                         break;
                     case STRING:
-                        try {
-                            StringDelivery sd = (StringDelivery) delivery;
-                            String data = sd.getData();
-                            byte[] bytes = data.getBytes(StandardCharsets.ISO_8859_1);
-                           action.apply(bytes);
-                            logger.log(Level.INFO, data);
-                        }catch(Exception e){
-                            e.printStackTrace();
-                        }
+                        StringDelivery sd = (StringDelivery) delivery;
+                        String data = sd.getData();
+                        byte[] stringbytes = data.getBytes(StandardCharsets.ISO_8859_1);
+                        action.apply(stringbytes);
+                        logger.log(Level.INFO, data);
                         break;
                     case JSON:
                         JsonDelivery jd = (JsonDelivery)delivery;
