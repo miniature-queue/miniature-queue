@@ -32,8 +32,8 @@ public class MqLightServerImplementation implements ServerImplementation {
         if(queue.queueTypeHint().equals(QueueType.WORKER_QUEUE)) {
             try {
                 //ToDo: Implement other queue semantics
-                String decoded = new String(message, StandardCharsets.ISO_8859_1);
-                client.send(queue.value(), decoded, null);
+                SendOptions sendOpts = SendOptions.builder().setQos(QOS.AT_MOST_ONCE).build();
+                client.send(queue.value(), ByteBuffer.wrap(message), null, sendOpts, null, null);
             } catch (Exception e) {
                 throw new QueueException("failed to enqueue onto queue: " + queue.value(), e);
             }
@@ -50,7 +50,12 @@ public class MqLightServerImplementation implements ServerImplementation {
     @Override
     public void listen(Queue queue, Function<byte[], Boolean> action) throws QueueException {
         logger.log(Level.INFO, "Registering listener");
-        client.subscribe(queue.value(), new DestinationAdapter<Void>() {
+        SubscribeOptions subOpts = SubscribeOptions.builder().setQos(QOS.AT_LEAST_ONCE).setAutoConfirm(false).build();
+        if(queue.queueTypeHint().equals(QueueType.WORKER_QUEUE)){
+            logger.log(Level.INFO, "Configuring for AT_MOST_ONCE");
+            subOpts = SubscribeOptions.builder().setQos(QOS.AT_MOST_ONCE).setShare(queue.value()).build();
+        }
+        client.subscribe(queue.value(), subOpts, new DestinationAdapter<Void>() {
             public void onMessage(NonBlockingClient client, Void context, Delivery delivery) {
                 logger.log(Level.INFO, "Message received...");
                 logger.log(Level.INFO, delivery.getType().toString());

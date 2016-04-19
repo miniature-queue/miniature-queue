@@ -1,6 +1,8 @@
 package com.github.mrchris2000.queue.mqlight.example;
 
 import com.github.mlk.queue.*;
+import com.github.mlk.queue.codex.StringDecoder;
+import com.github.mlk.queue.codex.StringEncoder;
 import com.github.mrchris2000.queue.mqlight.MqLightServer;
 import org.junit.Test;
 
@@ -24,14 +26,18 @@ public class WorkerTest {
     public void whenItemPutOnQueueThenAllListenersRelieveACopy() throws InterruptedException {
         final AtomicBoolean oneReceiveMessage = new AtomicBoolean(false);
         final AtomicBoolean twoReceiveMessage = new AtomicBoolean(false);
-        WorkerExampleQueue one = Queuify.builder().server(new MqLightServer("amqp://user:password@localhost")).target(WorkerExampleQueue.class);
-        WorkerExampleQueue two = Queuify.builder().server(new MqLightServer("amqp://user:password@localhost")).target(WorkerExampleQueue.class);
-        WorkerExampleQueue sender = Queuify.builder().server(new MqLightServer("amqp://user:password@localhost")).target(WorkerExampleQueue.class);
+
+        MqLightServer mqls =  new MqLightServer("amqp://user:password@localhost");
+        MqLightServer mqls2 =  new MqLightServer("amqp://user:password@localhost");
+
+        WorkerExampleQueue one = Queuify.builder().decoder(new StringDecoder()).server(mqls).target(WorkerExampleQueue.class);
+        WorkerExampleQueue two = Queuify.builder().decoder(new StringDecoder()).server(mqls2).target(WorkerExampleQueue.class);
+
+        WorkerExampleQueue sender = Queuify.builder().encoder(new StringEncoder()).server(mqls).target(WorkerExampleQueue.class);
 
         one.receiveMessage((x) -> { oneReceiveMessage.set(true); return true; });
         two.receiveMessage((x) -> { twoReceiveMessage.set(true); return true; });
 
-        Thread.sleep(5000L);
 
         sender.publishMessage("msg");
         Thread.sleep(500L);
