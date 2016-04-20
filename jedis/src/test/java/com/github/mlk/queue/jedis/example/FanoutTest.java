@@ -1,10 +1,10 @@
 package com.github.mlk.queue.jedis.example;
 
-import com.github.geowarin.junit.DockerRule;
 import com.github.mlk.queue.*;
 import com.github.mlk.queue.jedis.JedisServer;
 import org.junit.Rule;
 import org.junit.Test;
+import pl.domzal.junit.docker.rule.DockerRule;
 import redis.clients.jedis.JedisPool;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -16,9 +16,8 @@ public class FanoutTest {
     @Rule
     public DockerRule dockerRule =
             DockerRule.builder()
-                    .image("redis:latest")
-                    .ports("6379/tcp")
-                    .waitForPort("6379/tcp")
+                    .imageName("redis:latest")
+                    .expose("6379", "6379/tcp")
                     .build();
 
     @Queue(value = "fanout-example", queueTypeHint = QueueType.FANOUT_QUEUE)
@@ -36,9 +35,9 @@ public class FanoutTest {
         final AtomicBoolean twoReceiveMessage = new AtomicBoolean(false);
 
 
-        JedisServer s1 = new JedisServer(new JedisPool(dockerRule.getDockerHost(), dockerRule.getHostPort("6379/tcp")));
-        JedisServer s2 = new JedisServer(new JedisPool(dockerRule.getDockerHost(), dockerRule.getHostPort("6379/tcp")));
-        JedisServer s3 = new JedisServer(new JedisPool(dockerRule.getDockerHost(), dockerRule.getHostPort("6379/tcp")));
+        JedisServer s1 = new JedisServer(new JedisPool(dockerRule.getDockerHost(), 6379));
+        JedisServer s2 = new JedisServer(new JedisPool(dockerRule.getDockerHost(), 6379));
+        JedisServer s3 = new JedisServer(new JedisPool(dockerRule.getDockerHost(), 6379));
 
         try {
             FanoutExampleQueue sender = Queuify.builder().server(s3).target(FanoutExampleQueue.class);

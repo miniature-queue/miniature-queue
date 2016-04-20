@@ -1,11 +1,11 @@
 package com.github.mlk.queue.rabbitmq.example;
 
-import com.github.geowarin.junit.DockerRule;
 import com.github.mlk.queue.*;
 import com.github.mlk.queue.rabbitmq.RabbitMqServer;
 import com.rabbitmq.client.ConnectionFactory;
 import org.junit.Rule;
 import org.junit.Test;
+import pl.domzal.junit.docker.rule.DockerRule;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -17,9 +17,8 @@ public class FanoutTest {
     @Rule
     public DockerRule dockerRule =
             DockerRule.builder()
-                    .image("rabbitmq:latest")
-                    .ports("5672/tcp")
-                    .waitForPort("5672/tcp")
+                    .imageName("rabbitmq:latest")
+                    .expose("5672", "5672/tcp")
                     .build();
 
     @Queue(value = "fanout-example", queueTypeHint = QueueType.FANOUT_QUEUE)
@@ -34,12 +33,14 @@ public class FanoutTest {
     ConnectionFactory create() {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(dockerRule.getDockerHost());
-        factory.setPort(dockerRule.getHostPort("5672/tcp"));
+        factory.setPort(5672);
         return factory;
     }
 
     @Test
     public void whenItemPutOnQueueThenAllListenersRelieveACopy() throws InterruptedException {
+        Thread.sleep(5000L);
+
         final AtomicBoolean oneReceiveMessage = new AtomicBoolean(false);
         final AtomicBoolean twoReceiveMessage = new AtomicBoolean(false);
         FanoutExampleQueue one = Queuify.builder().server(new RabbitMqServer(create())).target(FanoutExampleQueue.class);

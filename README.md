@@ -47,7 +47,10 @@ In a fanout queue each message is sent to every listener. The message publisher 
 
 As this tests interactions with MQs, this runs against real services
 running in a Docker container. Each test will start a container using
-[geowarin's docker JUnit rule.](https://github.com/geowarin/docker-junit-rule)
-This should just work using the Docker Tool Box on Windows and MacOS.
+[tdomzal's docker JUnit rule.](https://github.com/tdomzal/junit-docker-rule-rule)
+
+You MUST have your
+`DOCKER_CERT_PATH` and `DOCKER_HOST` environment variables set.
+
 
 [Maven Site](http://pi.michael-lloyd-lee.me.uk/miniature-queue/)
