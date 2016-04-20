@@ -9,6 +9,17 @@
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>central</id>
+            <name>bintray</name>
+            <url>http://jcenter.bintray.com</url>
+        </repository>
+    </repositories>
+
     <artifactId>miniature-queue-jedis</artifactId>
     <name>Miniature Queue: REDIS using Jedis</name>
 
