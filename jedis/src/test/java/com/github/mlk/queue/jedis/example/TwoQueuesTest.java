@@ -19,7 +19,8 @@ public class TwoQueuesTest {
     public DockerRule dockerRule =
             DockerRule.builder()
                     .imageName("redis:latest")
-                    .expose("6379", "6379/tcp")
+                    .publishAllPorts(true)
+                    .waitForMessage("Running in standalone mode")
                     .build();
 
     @Queue(value = "queue1", queueTypeHint = QueueType.FANOUT_QUEUE)
@@ -41,7 +42,7 @@ public class TwoQueuesTest {
     public void whenMessageSentToOneQueueOnlyThatQueueRecievesMessage() throws InterruptedException {
         final AtomicBoolean oneReceiveMessage = new AtomicBoolean(false);
         final AtomicBoolean twoReceiveMessage = new AtomicBoolean(false);
-        JedisServer server = new JedisServer(new JedisPool(dockerRule.getDockerHost(), 6379));
+        JedisServer server = new JedisServer(new JedisPool(dockerRule.getDockerHost(), Integer.parseInt(dockerRule.getExposedContainerPort("6379"))));
 
         Queuify.Builder builder = Queuify.builder().server(server);
         QueueOne queueOne = builder.target(QueueOne.class);

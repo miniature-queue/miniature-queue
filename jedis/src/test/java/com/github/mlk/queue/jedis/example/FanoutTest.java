@@ -17,7 +17,8 @@ public class FanoutTest {
     public DockerRule dockerRule =
             DockerRule.builder()
                     .imageName("redis:latest")
-                    .expose("6379", "6379/tcp")
+                    .publishAllPorts(true)
+                    .waitForMessage("Running in standalone mode")
                     .build();
 
     @Queue(value = "fanout-example", queueTypeHint = QueueType.FANOUT_QUEUE)
@@ -34,10 +35,9 @@ public class FanoutTest {
         final AtomicBoolean oneReceiveMessage = new AtomicBoolean(false);
         final AtomicBoolean twoReceiveMessage = new AtomicBoolean(false);
 
-
-        JedisServer s1 = new JedisServer(new JedisPool(dockerRule.getDockerHost(), 6379));
-        JedisServer s2 = new JedisServer(new JedisPool(dockerRule.getDockerHost(), 6379));
-        JedisServer s3 = new JedisServer(new JedisPool(dockerRule.getDockerHost(), 6379));
+        JedisServer s1 = new JedisServer(new JedisPool(dockerRule.getDockerHost(), Integer.parseInt(dockerRule.getExposedContainerPort("6379"))));
+        JedisServer s2 = new JedisServer(new JedisPool(dockerRule.getDockerHost(), Integer.parseInt(dockerRule.getExposedContainerPort("6379"))));
+        JedisServer s3 = new JedisServer(new JedisPool(dockerRule.getDockerHost(), Integer.parseInt(dockerRule.getExposedContainerPort("6379"))));
 
         try {
             FanoutExampleQueue sender = Queuify.builder().server(s3).target(FanoutExampleQueue.class);
