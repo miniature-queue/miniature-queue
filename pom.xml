@@ -32,8 +32,9 @@
     <modules>
         <module>core</module>
         <module>gson</module>
-	<module>jackson</module>
-	<module>rabbitmq</module>
-	<module>jedis</module>
+	    <module>jackson</module>
+	    <module>rabbitmq</module>
+        <module>mqlight</module>
+	    <module>jedis</module>
     </modules>
 </project>

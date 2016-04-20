@@ -35,6 +35,7 @@ In a fanout queue each message is sent to every listener. The message publisher 
 
  * [Rabbit MQ](https://www.rabbitmq.com/) via  [`minature-queue-rabbitmq`](https://github.com/mlk/miniature-queue/tree/master/rabbitmq) package.
  * [Redis](http://redis.io/) via the [`miniature-queue-jedis`](https://github.com/mlk/miniature-queue/tree/master/jedis) package. Note: This only supports FAN_OUT queues.
+ * [MQLight](https://developer.ibm.com/messaging/mq-light/) via the [`miniature-queue-mqlight`](https://github.com/mlk/miniature-queue/tree/master/mqlight) package. Note: This is a work in progress.
 
 ## Encoding/Decoding objects
 
@@ -42,15 +43,6 @@ In a fanout queue each message is sent to every listener. The message publisher 
  * UTF-8 Strings (in core)
  * JSON via [GSON](https://github.com/google/gson) via [`miniature-queue-gson`](https://github.com/mlk/miniature-queue/tree/master/gson) package.
  * JSON via [Jackson](https://github.com/FasterXML/jackson) via the [`miniature-queue-jackson`](https://github.com/mlk/miniature-queue/tree/master/jackson) package.
-
-# Running the tests
-
-As this tests interactions with MQs, this runs against real services
-running in a Docker container. Each test will start a container using
-[tdomzal's docker JUnit rule.](https://github.com/tdomzal/junit-docker-rule-rule)
-
-You MUST have your
-`DOCKER_CERT_PATH` and `DOCKER_HOST` environment variables set.
 
 
 [Maven Site](http://pi.michael-lloyd-lee.me.uk/miniature-queue/)
