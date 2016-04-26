@@ -70,6 +70,13 @@
             <artifactId>mqlight-api</artifactId>
             <version>1.0.2016020300</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.tdomzal</groupId>
+            <artifactId>junit-docker-rule</artifactId>
+            <version>0.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <distributionManagement>

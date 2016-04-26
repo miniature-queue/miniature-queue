@@ -7,6 +7,7 @@ import com.ibm.mqlight.api.CompletionListener;
 import com.ibm.mqlight.api.NonBlockingClient;
 import com.ibm.mqlight.api.NonBlockingClientAdapter;
 
+import java.util.concurrent.SynchronousQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,6 +21,7 @@ public class MqLightServer extends Server {
     /** @param host The host (service in MQ Light parlance) to connect to. This will result in a default connection with this host.
      */
     public MqLightServer(String host) {
+        final SynchronousQueue<String> q = new SynchronousQueue<>();
         NonBlockingClient client = NonBlockingClient.create(host, new NonBlockingClientAdapter() {
         }, null);
         client.start(new CompletionListener() {
@@ -27,14 +29,29 @@ public class MqLightServer extends Server {
                                   Object ctx) {
                 // ... code for handling success of send operation
                 logger.log(Level.INFO, "MQ Light client completion");
+                try {
+                    q.put("a");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             public void onError(NonBlockingClient client, Object o, Exception e) {
-                logger.log(Level.WARNING, "MQ Light client failed: " +e.getMessage() );
+                logger.log(Level.WARNING, "MQ Light client failed: " + e.getMessage());
+                try {
+                    q.put("a");
+                } catch (InterruptedException e1) {
+                    e.printStackTrace();
+                }
             }
         }, null);
-        implementation = new MqLightServerImplementation(client);
 
+        implementation = new MqLightServerImplementation(client);
+        try {
+            q.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /** @param client A pre-constructed connection for MQ Light.

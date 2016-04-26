@@ -44,5 +44,10 @@ In a fanout queue each message is sent to every listener. The message publisher 
  * JSON via [GSON](https://github.com/google/gson) via [`miniature-queue-gson`](https://github.com/mlk/miniature-queue/tree/master/gson) package.
  * JSON via [Jackson](https://github.com/FasterXML/jackson) via the [`miniature-queue-jackson`](https://github.com/mlk/miniature-queue/tree/master/jackson) package.
 
+## Running the tests
+
+Most of the tests for this project are integration tests rather than unit. As such they require the MQ server to be running. In order to make that happen we use Docker. 
+You require either the enviroment variables `DOCKER_CERT_PATH` and `DOCKER_HOST` set, or to be running Docker on localhost with the standard port.
+
 
 [Maven Site](http://pi.michael-lloyd-lee.me.uk/miniature-queue/)

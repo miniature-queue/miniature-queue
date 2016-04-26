@@ -20,8 +20,6 @@ public class MqLightServerImplementation implements ServerImplementation {
     private final Logger logger = Logger.getLogger(getClass().getName());
 
     private NonBlockingClient client;
-    private ReentrantLock lock = new ReentrantLock();
-
 
     public MqLightServerImplementation(NonBlockingClient client) {
         this.client = client;
@@ -29,6 +27,10 @@ public class MqLightServerImplementation implements ServerImplementation {
 
     @Override
     public void publish(Queue queue, byte[] message) throws QueueException {
+        System.out.println(queue.value());
+
+        System.out.println(client.getState());
+
         if(queue.queueTypeHint().equals(QueueType.WORKER_QUEUE)) {
             try {
                 //ToDo: Implement other queue semantics
@@ -49,6 +51,8 @@ public class MqLightServerImplementation implements ServerImplementation {
 
     @Override
     public void listen(Queue queue, Function<byte[], Boolean> action) throws QueueException {
+        System.out.println(queue.value());
+        System.out.println(client.getState());
         logger.log(Level.INFO, "Registering listener");
         SubscribeOptions subOpts = SubscribeOptions.builder().setQos(QOS.AT_LEAST_ONCE).setAutoConfirm(false).build();
         if(queue.queueTypeHint().equals(QueueType.WORKER_QUEUE)){
@@ -89,7 +93,7 @@ public class MqLightServerImplementation implements ServerImplementation {
                }
                @Override
                public void onError(NonBlockingClient c, Void ctx, Exception exception) {
-                   logger.log(Level.SEVERE, "Error:"+ exception.getMessage());
+                   logger.log(Level.SEVERE, "Error:"+ exception.getMessage(), exception);
 
                }
         }, null);
@@ -108,17 +112,5 @@ public class MqLightServerImplementation implements ServerImplementation {
                 exception.printStackTrace();
             }
         }, null);
-    }
-
-    private NonBlockingClient getConnection() throws IOException, TimeoutException {
-        lock.lock();
-        try {
-            if (client == null) {
-                throw new QueueException("Client currently null", null);
-            }
-            return client;
-        } finally {
-            lock.unlock();
-        }
     }
 }
