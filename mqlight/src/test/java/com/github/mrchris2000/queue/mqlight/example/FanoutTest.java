@@ -4,7 +4,9 @@ import com.github.mlk.queue.*;
 import com.github.mlk.queue.codex.StringDecoder;
 import com.github.mlk.queue.codex.StringEncoder;
 import com.github.mrchris2000.queue.mqlight.MqLightServer;
+import org.junit.Rule;
 import org.junit.Test;
+import pl.domzal.junit.docker.rule.DockerRule;
 
 import javax.xml.bind.DatatypeConverter;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -13,6 +15,17 @@ import java.util.function.Function;
 import static org.junit.Assert.assertTrue;
 
 public class FanoutTest {
+    @Rule
+    public DockerRule dockerRule =
+            DockerRule.builder()
+                    .imageName("ibmcom/mqlight:1.0")
+                    .env("LICENSE","accept")
+                    .env("MQLIGHT_USER","user")
+                    .env("MQLIGHT_PASSWORD","password")
+                    .publishAllPorts(true)
+                    .waitForMessage("Running in standalone mode")
+                    .build();
+
     @Queue(value = "/fanout-example", queueTypeHint = QueueType.FANOUT_QUEUE)
     interface FanoutExampleQueue {
         @Publish
@@ -27,8 +40,8 @@ public class FanoutTest {
         final AtomicBoolean oneReceiveMessage = new AtomicBoolean(false);
         final AtomicBoolean twoReceiveMessage = new AtomicBoolean(false);
 
-        MqLightServer mqls =  new MqLightServer("amqp://user:password@localhost");
-        MqLightServer mqls2 =  new MqLightServer("amqp://user:password@localhost");
+        MqLightServer mqls =  new MqLightServer("amqp://user:password@"+ dockerRule.getDockerHost());
+        MqLightServer mqls2 =  new MqLightServer("amqp://user:password@"+ dockerRule.getDockerHost());
 
         FanoutExampleQueue one = Queuify.builder().decoder(new StringDecoder()).server(mqls).target(FanoutExampleQueue.class);
         FanoutExampleQueue two = Queuify.builder().decoder(new StringDecoder()).server(mqls2).target(FanoutExampleQueue.class);

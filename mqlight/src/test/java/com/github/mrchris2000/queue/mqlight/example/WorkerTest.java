@@ -4,7 +4,9 @@ import com.github.mlk.queue.*;
 import com.github.mlk.queue.codex.StringDecoder;
 import com.github.mlk.queue.codex.StringEncoder;
 import com.github.mrchris2000.queue.mqlight.MqLightServer;
+import org.junit.Rule;
 import org.junit.Test;
+import pl.domzal.junit.docker.rule.DockerRule;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -13,6 +15,17 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class WorkerTest {
+    @Rule
+    public DockerRule dockerRule =
+            DockerRule.builder()
+                    .imageName("ibmcom/mqlight:1.0")
+                    .env("LICENSE","accept")
+                    .env("MQLIGHT_USER","user")
+                    .env("MQLIGHT_PASSWORD","password")
+                    .publishAllPorts(true)
+                    .waitForMessage("Running in standalone mode")
+                    .build();
+
     @Queue(value = "/worker-example", queueTypeHint = QueueType.WORKER_QUEUE)
     interface WorkerExampleQueue {
         @Publish
@@ -27,8 +40,8 @@ public class WorkerTest {
         final AtomicBoolean oneReceiveMessage = new AtomicBoolean(false);
         final AtomicBoolean twoReceiveMessage = new AtomicBoolean(false);
 
-        MqLightServer mqls =  new MqLightServer("amqp://user:password@localhost");
-        MqLightServer mqls2 =  new MqLightServer("amqp://user:password@localhost");
+        MqLightServer mqls =  new MqLightServer("amqp://user:password@"+ dockerRule.getDockerHost());
+        MqLightServer mqls2 =  new MqLightServer("amqp://user:password@"+ dockerRule.getDockerHost());
 
         WorkerExampleQueue one = Queuify.builder().decoder(new StringDecoder()).server(mqls).target(WorkerExampleQueue.class);
         WorkerExampleQueue two = Queuify.builder().decoder(new StringDecoder()).server(mqls2).target(WorkerExampleQueue.class);
