@@ -8,6 +8,7 @@ import com.ibm.mqlight.api.NonBlockingClient;
 import com.ibm.mqlight.api.NonBlockingClientAdapter;
 
 import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +22,7 @@ public class MqLightServer extends Server {
     /** @param host The host (service in MQ Light parlance) to connect to. This will result in a default connection with this host.
      */
     public MqLightServer(String host) {
+        System.out.println(host);
         final SynchronousQueue<String> q = new SynchronousQueue<>();
         NonBlockingClient client = NonBlockingClient.create(host, new NonBlockingClientAdapter() {
         }, null);
@@ -30,7 +32,7 @@ public class MqLightServer extends Server {
                 // ... code for handling success of send operation
                 logger.log(Level.INFO, "MQ Light client completion");
                 try {
-                    q.put("a");
+                    q.put("Connected!");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -39,17 +41,21 @@ public class MqLightServer extends Server {
             public void onError(NonBlockingClient client, Object o, Exception e) {
                 logger.log(Level.WARNING, "MQ Light client failed: " + e.getMessage());
                 try {
-                    q.put("a");
+                    q.put("Failed :( " +e.getMessage());
+                    e.printStackTrace();
                 } catch (InterruptedException e1) {
                     e.printStackTrace();
                 }
             }
         }, null);
-
+        System.out.println("created host");
         implementation = new MqLightServerImplementation(client);
+        System.out.println("waiting for host to start");
         try {
-            q.take();
+            System.out.println(q.poll(1, TimeUnit.MINUTES));
+            System.out.println("Woohoo :)");
         } catch (InterruptedException e) {
+            System.out.println("Nope. :(");
             e.printStackTrace();
         }
     }
