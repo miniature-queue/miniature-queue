@@ -35,9 +35,9 @@
                 <plugin>
                     <groupId>com.versioneye</groupId>
                     <artifactId>versioneye-maven-plugin</artifactId>
-                    <version>3.9.1</version>
+                    <version>3.9.2</version>
                     <configuration>
-                        <projectId>571d2c1bd1e3640010758c38</projectId>
+                        <projectId>57360d42ebad9c000a4c04e5</projectId>
                         <apiKey>2eb3b95c435ee5139387</apiKey>
                         <mergeAfterCreate>true</mergeAfterCreate>
                     </configuration>
