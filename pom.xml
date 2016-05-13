@@ -30,18 +30,20 @@
   </reporting>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>com.versioneye</groupId>
-                <artifactId>versioneye-maven-plugin</artifactId>
-                <version>3.9.1</version>
-                <configuration>
-                    <projectId>571d2c1bd1e3640010758c38</projectId>
-                    <apiKey>2eb3b95c435ee5139387</apiKey>
-                    <mergeAfterCreate>true</mergeAfterCreate>
-                </configuration>
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.versioneye</groupId>
+                    <artifactId>versioneye-maven-plugin</artifactId>
+                    <version>3.9.1</version>
+                    <configuration>
+                        <projectId>571d2c1bd1e3640010758c38</projectId>
+                        <apiKey>2eb3b95c435ee5139387</apiKey>
+                        <mergeAfterCreate>true</mergeAfterCreate>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <modules>
