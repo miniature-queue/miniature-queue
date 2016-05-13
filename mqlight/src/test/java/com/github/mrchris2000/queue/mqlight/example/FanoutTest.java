@@ -20,10 +20,13 @@ public class FanoutTest {
             DockerRule.builder()
                     .imageName("ibmcom/mqlight:1.0")
                     .env("LICENSE","accept")
+                    .env("volume", "/var/example:/var/mqlight")
                     .env("MQLIGHT_USER","user")
                     .env("MQLIGHT_PASSWORD","password")
-                    .publishAllPorts(true)
-                    .waitForMessage("Running in standalone mode")
+                    .env("publish","5672:5672")
+                    .env("publish","9180:9180")
+                    .publishAllPorts(false)
+                    .waitForMessage("### Welcome to IBM MQ Light ###", 90)
                     .build();
 
     @Queue(value = "/fanout-example", queueTypeHint = QueueType.FANOUT_QUEUE)
@@ -55,5 +58,6 @@ public class FanoutTest {
         Thread.sleep(500L);
 
         assertTrue(oneReceiveMessage.get() && twoReceiveMessage.get());
+
     }
 }
