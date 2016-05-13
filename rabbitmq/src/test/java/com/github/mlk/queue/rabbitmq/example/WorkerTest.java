@@ -2,7 +2,12 @@ package com.github.mlk.queue.rabbitmq.example;
 
 import com.github.mlk.queue.*;
 import com.github.mlk.queue.rabbitmq.RabbitMqServer;
+import com.rabbitmq.client.ConnectionFactory;
+import com.spotify.docker.client.DockerClient;
+import com.spotify.docker.client.messages.PortBinding;
+import org.junit.Rule;
 import org.junit.Test;
+import pl.domzal.junit.docker.rule.DockerRule;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
@@ -11,6 +16,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class WorkerTest {
+    @Rule
+    public DockerRule dockerRule =
+            DockerRule.builder()
+                    .imageName("rabbitmq:latest")
+                    .publishAllPorts(true)
+                    .waitForMessage("Server startup complete")
+                    .build();
+
     @Queue(value = "worker-example", queueTypeHint = QueueType.WORKER_QUEUE)
     interface WorkerExampleQueue {
         @Publish
@@ -20,13 +33,21 @@ public class WorkerTest {
         void receiveMessage(Function<String, Boolean> function);
     }
 
+
+    ConnectionFactory create() {
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost(dockerRule.getDockerHost());
+        factory.setPort(Integer.parseInt(dockerRule.getExposedContainerPort("5672")));
+        return factory;
+    }
+
     @Test
     public void whenItemPutOnQueueThenAllListenersRelieveACopy() throws InterruptedException {
         final AtomicBoolean oneReceiveMessage = new AtomicBoolean(false);
         final AtomicBoolean twoReceiveMessage = new AtomicBoolean(false);
-        WorkerExampleQueue one = Queuify.builder().server(new RabbitMqServer("localhost")).target(WorkerExampleQueue.class);
-        WorkerExampleQueue two = Queuify.builder().server(new RabbitMqServer("localhost")).target(WorkerExampleQueue.class);
-        WorkerExampleQueue sender = Queuify.builder().server(new RabbitMqServer("localhost")).target(WorkerExampleQueue.class);
+        WorkerExampleQueue one = Queuify.builder().server(new RabbitMqServer(create())).target(WorkerExampleQueue.class);
+        WorkerExampleQueue two = Queuify.builder().server(new RabbitMqServer(create())).target(WorkerExampleQueue.class);
+        WorkerExampleQueue sender = Queuify.builder().server(new RabbitMqServer(create())).target(WorkerExampleQueue.class);
 
         one.receiveMessage((x) -> { oneReceiveMessage.set(true); return true; });
         two.receiveMessage((x) -> { twoReceiveMessage.set(true); return true; });

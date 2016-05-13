@@ -41,7 +41,6 @@
         </developer>
     </developers>
 
-
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -64,6 +63,13 @@
             <groupId>com.rabbitmq</groupId>
             <artifactId>amqp-client</artifactId>
             <version>3.6.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.tdomzal</groupId>
+            <artifactId>junit-docker-rule</artifactId>
+            <version>0.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

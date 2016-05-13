@@ -1,11 +1,11 @@
 language: java
 install: true
+sudo: required
 jdk:
   - oraclejdk8
 
 services: 
-  - rabbitmq
-  - redis-server
+  - docker
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
