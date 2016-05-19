@@ -23,6 +23,7 @@ public class FanoutTest {
                     .env("volume", "/var/example:/var/mqlight")
                     .env("MQLIGHT_USER","user")
                     .env("MQLIGHT_PASSWORD","password")
+                    .expose("5672","5672")
                     .publishAllPorts(true)
                     .waitForMessage("Monitoring MQ Light...", 90)
                     .build();
