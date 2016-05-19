@@ -23,10 +23,8 @@ public class FanoutTest {
                     .env("volume", "/var/example:/var/mqlight")
                     .env("MQLIGHT_USER","user")
                     .env("MQLIGHT_PASSWORD","password")
-                    .env("publish","5672:5672")
-                    .env("publish","9180:9180")
-                    .publishAllPorts(false)
-                    .waitForMessage("### Welcome to IBM MQ Light ###", 90)
+                    .publishAllPorts(true)
+                    .waitForMessage("Monitoring MQ Light...", 90)
                     .build();
 
     @Queue(value = "/fanout-example", queueTypeHint = QueueType.FANOUT_QUEUE)
@@ -38,13 +36,13 @@ public class FanoutTest {
         void receiveMessage(Function<String, Boolean> function);
     }
 
-    @Test
+    @Test(timeout = 120000)
     public void whenItemPutOnQueueThenAllListenersRelieveACopy() throws InterruptedException {
         final AtomicBoolean oneReceiveMessage = new AtomicBoolean(false);
         final AtomicBoolean twoReceiveMessage = new AtomicBoolean(false);
 
-        MqLightServer mqls =  new MqLightServer("amqp://user:password@"+ dockerRule.getDockerHost());
-        MqLightServer mqls2 =  new MqLightServer("amqp://user:password@"+ dockerRule.getDockerHost());
+        MqLightServer mqls =  new MqLightServer("amqp://user:password@"+ dockerRule.getDockerHost()+":"+dockerRule.getExposedContainerPort("5672"));
+        MqLightServer mqls2 =  new MqLightServer("amqp://user:password@"+ dockerRule.getDockerHost()+":"+dockerRule.getExposedContainerPort("5672"));
 
         FanoutExampleQueue one = Queuify.builder().decoder(new StringDecoder()).server(mqls).target(FanoutExampleQueue.class);
         FanoutExampleQueue two = Queuify.builder().decoder(new StringDecoder()).server(mqls2).target(FanoutExampleQueue.class);
@@ -53,11 +51,12 @@ public class FanoutTest {
         one.receiveMessage((x) -> { oneReceiveMessage.set(true); return true; });
         two.receiveMessage((x) -> { twoReceiveMessage.set(true); return true; });
 
-
+        Thread.sleep(5000L); // Allow time for Docker container to be properly ready (Despite saying it's good to go).
         sender.publishMessage("msg");
-        Thread.sleep(500L);
+        Thread.sleep(500L); // Allow time for message delivery to clients.
 
         assertTrue(oneReceiveMessage.get() && twoReceiveMessage.get());
+
 
     }
 }
