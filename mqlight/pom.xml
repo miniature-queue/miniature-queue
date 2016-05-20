@@ -13,7 +13,7 @@
     <name>Miniature Queue: MQ Light</name>
 
     <description>TBA.</description>
-    <url>https://github.com/mrchris2000/miniature-queue/mqlight</url>
+    <url>https://github.com/mlk/miniature-queue/mqlight</url>
 
     <licenses>
         <license>
@@ -24,9 +24,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:http://github.com/mrchris2000/miniature-queue.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/mrchris2000/miniature-queue.git</developerConnection>
-        <url>http://github.com/mrchris2000/miniature-queue</url>
+        <connection>scm:git:http://github.com/mlk/miniature-queue.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/mlk/miniature-queue.git</developerConnection>
+        <url>http://github.com/mlk/miniature-queue</url>
     </scm>
 
     <issueManagement>
@@ -76,13 +76,6 @@
             <groupId>com.ibm.mqlight</groupId>
             <artifactId>mqlight-api</artifactId>
             <version>1.0.2016020300</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.tdomzal</groupId>
-            <artifactId>junit-docker-rule</artifactId>
-            <version>0.1</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
