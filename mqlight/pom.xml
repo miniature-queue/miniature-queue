@@ -66,6 +66,13 @@
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>com.github.tdomzal</groupId>
+            <artifactId>junit-docker-rule</artifactId>
+            <version>0.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>com.ibm.mqlight</groupId>
             <artifactId>mqlight-api</artifactId>
             <version>1.0.2016020300</version>

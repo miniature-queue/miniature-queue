@@ -3,8 +3,6 @@ package com.github.mlk.queue.rabbitmq.example;
 import com.github.mlk.queue.*;
 import com.github.mlk.queue.rabbitmq.RabbitMqServer;
 import com.rabbitmq.client.ConnectionFactory;
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.messages.PortBinding;
 import org.junit.Rule;
 import org.junit.Test;
 import pl.domzal.junit.docker.rule.DockerRule;
