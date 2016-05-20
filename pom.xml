@@ -29,11 +29,29 @@
   
   </reporting>
 
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.versioneye</groupId>
+                    <artifactId>versioneye-maven-plugin</artifactId>
+                    <version>3.9.2</version>
+                    <configuration>
+                        <projectId>57360d42ebad9c000a4c04e5</projectId>
+                        <apiKey>2eb3b95c435ee5139387</apiKey>
+                        <mergeAfterCreate>true</mergeAfterCreate>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
     <modules>
         <module>core</module>
         <module>gson</module>
-	<module>jackson</module>
-	<module>rabbitmq</module>
-	<module>jedis</module>
+	    <module>jackson</module>
+	    <module>rabbitmq</module>
+        <module>mqlight</module>
+	    <module>jedis</module>
     </modules>
 </project>

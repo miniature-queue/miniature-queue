@@ -9,24 +9,24 @@
         <version>0.0.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>miniature-queue-rabbitmq</artifactId>
-    <name>Miniature Queue: Rabbit MQ</name>
+    <artifactId>miniature-queue-mqlight</artifactId>
+    <name>Miniature Queue: MQ Light</name>
 
     <description>TBA.</description>
-    <url>https://github.com/mlk/miniature-queue/rabbitmq</url>
+    <url>https://github.com/mrchris2000/miniature-queue/mqlight</url>
 
     <licenses>
         <license>
             <name>MIT License</name>
-            <url>https://raw.githubusercontent.com/mlk/miniature-queue/master/LICENSE</url>
+            <url>https://raw.github.com/mlk/miniature-queue/master/license.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
 
     <scm>
-        <connection>scm:git:http://github.com/mlk/miniature-queue.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/mlk/miniature-queue.git</developerConnection>
-        <url>http://github.com/mlk/miniature-queue</url>
+        <connection>scm:git:http://github.com/mrchris2000/miniature-queue.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/mrchris2000/miniature-queue.git</developerConnection>
+        <url>http://github.com/mrchris2000/miniature-queue</url>
     </scm>
 
     <issueManagement>
@@ -39,7 +39,13 @@
             <name>Michael Lloyd Lee</name>
             <email>pom@michael-lloyd-lee.me.uk</email>
         </developer>
+        <developer>
+            <id>mrchris2000</id>
+            <name>Chris Haggan</name>
+            <email>chaggan@gmail.com</email>
+        </developer>
     </developers>
+
 
     <dependencies>
         <dependency>
@@ -60,16 +66,16 @@
             <version>0.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.rabbitmq</groupId>
-            <artifactId>amqp-client</artifactId>
-            <version>3.6.1</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.github.tdomzal</groupId>
             <artifactId>junit-docker-rule</artifactId>
             <version>0.1</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ibm.mqlight</groupId>
+            <artifactId>mqlight-api</artifactId>
+            <version>1.0.2016020300</version>
         </dependency>
     </dependencies>
 
