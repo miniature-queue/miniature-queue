@@ -1,6 +1,6 @@
 # miniature-queue
 
-[![Join the chat at https://gitter.im/mlk/miniature-queue](https://badges.gitter.im/mlk/miniature-queue.svg)](https://gitter.im/mlk/miniature-queue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/miniature-queue/miniature-queue.svg?branch=master)](https://travis-ci.org/miniature-queue/miniature-queue) [![codecov.io](https://codecov.io/github/miniature-queue/miniature-queue/coverage.svg?branch=master)](https://codecov.io/github/miniature-queue/miniature-queue?branch=master) [![API Docs](https://img.shields.io/badge/documentation-here-orange.svg)](http://pi.michael-lloyd-lee.me.uk/miniature-queue/apidocs/index.html) [![Dependency Status](https://www.versioneye.com/user/projects/57360d42ebad9c000a4c04e5/badge.svg?style=flat)](https://www.versioneye.com/user/projects/57360d42ebad9c000a4c04e5)
+[![Join the chat at https://gitter.im/miniature-queue/miniature-queue](https://badges.gitter.im/miniature-queue/miniature-queue.svg)](https://gitter.im/miniature-queue/miniature-queue?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/miniature-queue/miniature-queue.svg?branch=master)](https://travis-ci.org/miniature-queue/miniature-queue) [![codecov.io](https://codecov.io/github/miniature-queue/miniature-queue/coverage.svg?branch=master)](https://codecov.io/github/miniature-queue/miniature-queue?branch=master) [![API Docs](https://img.shields.io/badge/documentation-here-orange.svg)](http://pi.michael-lloyd-lee.me.uk/miniature-queue/apidocs/index.html) [![Dependency Status](https://www.versioneye.com/user/projects/57360d42ebad9c000a4c04e5/badge.svg?style=flat)](https://www.versioneye.com/user/projects/57360d42ebad9c000a4c04e5)
 
 `miniature-queue` is a Message Queue abstraction layer inspired by [feign](https://github.com/Netflix/feign) and [JDBI](http://jdbi.org/). It uses annotation based meta-programming to bind an interface to an Message Queue implementation.
 
@@ -33,16 +33,16 @@ In a fanout queue each message is sent to every listener. The message publisher 
 
 ## Message Queues supported
 
- * [Rabbit MQ](https://www.rabbitmq.com/) via  [`minature-queue-rabbitmq`](https://github.com/mlk/miniature-queue/tree/master/rabbitmq) package.
- * [Redis](http://redis.io/) via the [`miniature-queue-jedis`](https://github.com/mlk/miniature-queue/tree/master/jedis) package. Note: This only supports FAN_OUT queues.
- * [MQLight](https://developer.ibm.com/messaging/mq-light/) via the [`miniature-queue-mqlight`](https://github.com/mlk/miniature-queue/tree/master/mqlight) package. Note: This is a work in progress.
+ * [Rabbit MQ](https://www.rabbitmq.com/) via  [`minature-queue-rabbitmq`](https://github.com/miniature-queue/miniature-queue/tree/master/rabbitmq) package.
+ * [Redis](http://redis.io/) via the [`miniature-queue-jedis`](https://github.com/miniature-queue/miniature-queue/tree/master/jedis) package. Note: This only supports FAN_OUT queues.
+ * [MQLight](https://developer.ibm.com/messaging/mq-light/) via the [`miniature-queue-mqlight`](https://github.com/miniature-queue/miniature-queue/tree/master/mqlight) package. Note: This is a work in progress.
 
 ## Encoding/Decoding objects
 
  * Java serialization (in core)
  * UTF-8 Strings (in core)
- * JSON via [GSON](https://github.com/google/gson) via [`miniature-queue-gson`](https://github.com/mlk/miniature-queue/tree/master/gson) package.
- * JSON via [Jackson](https://github.com/FasterXML/jackson) via the [`miniature-queue-jackson`](https://github.com/mlk/miniature-queue/tree/master/jackson) package.
+ * JSON via [GSON](https://github.com/google/gson) via [`miniature-queue-gson`](https://github.com/miniature-queue/miniature-queue/tree/master/gson) package.
+ * JSON via [Jackson](https://github.com/FasterXML/jackson) via the [`miniature-queue-jackson`](https://github.com/miniature-queue/miniature-queue/tree/master/jackson) package.
 
 ## Running the tests
 
