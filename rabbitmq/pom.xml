@@ -13,25 +13,25 @@
     <name>Miniature Queue: Rabbit MQ</name>
 
     <description>TBA.</description>
-    <url>https://github.com/mlk/miniature-queue/rabbitmq</url>
+    <url>https://github.com/miniature-queue/miniature-queue/rabbitmq</url>
 
     <licenses>
         <license>
             <name>MIT License</name>
-            <url>https://raw.githubusercontent.com/mlk/miniature-queue/master/LICENSE</url>
+            <url>https://raw.githubusercontent.com/miniature-queue/miniature-queue/master/LICENSE</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
 
     <scm>
-        <connection>scm:git:http://github.com/mlk/miniature-queue.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/mlk/miniature-queue.git</developerConnection>
-        <url>http://github.com/mlk/miniature-queue</url>
+        <connection>scm:git:http://github.com/miniature-queue/miniature-queue.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/miniature-queue/miniature-queue.git</developerConnection>
+        <url>http://github.com/miniature-queue/miniature-queue</url>
     </scm>
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/mlk/miniature-queue/issues</url>
+        <url>https://github.com/miniature-queue/miniature-queue/issues</url>
     </issueManagement>
     <developers>
         <developer>
